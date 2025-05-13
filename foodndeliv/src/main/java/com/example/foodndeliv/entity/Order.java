@@ -22,6 +22,9 @@ public class Order {
     @Column(name = "order_details", length = 500)
     private String orderDetails;
 
+    @Column(name = "total_price") // ADDED in Task 1a
+    private Double totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
