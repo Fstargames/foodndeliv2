@@ -1,0 +1,17 @@
+sudo docker exec -it postgres-ordersdb sh
+
+env
+
+psql -U myadmin ordersdb
+\dt
+\d <tablename>
+
+CREATE USER myuser WITH PASSWORD 'userpass';
+GRANT ALL PRIVILEGES ON DATABASE ordersdb TO myuser;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO myuser;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO myuser;
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO myuser;
+
+
+\du
+\q
