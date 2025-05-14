@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foodndeliv-deployment
+  labels:
+    app: foodndeliv # Used by the Service to select these pods
+spec:
+  replicas: 1 # Start with 1 pod. You can scale this later for Task 1b.iii (concurrency).
+  selector:
+    matchLabels:
+      app: foodndeliv # Must match spec.template.metadata.labels
+  template: # This is the blueprint for your Pods
+    metadata:
+      labels:
+        app: foodndeliv # Pods will have this label
+    spec:
+      initContainers: # Added to ensure the DB service is resolvable before starting the main app container HERE
+      - name: wait-for-db
+        image: busybox:1.28 # A small image with networking tools
+        command: ['sh', '-c', 'echo -n "Waiting for DB service my-foodndeliv-db-postgresql to be resolvable..."; until nslookup my-fooddeliv-db-postgresql; do echo -n "."; sleep 2; done; echo "DB service is resolvable!"']
+      containers:
+      - name: foodndeliv-app-container # A name for the container within the pod
+        image: foodndeliv-app:v1.b    # Your Docker image name and tag (ensure this matches your built image)
+        imagePullPolicy: IfNotPresent # Important: Use local Minikube image if present.
+                                      # If you built the image directly into Minikube's daemon
+                                      # using `eval $(minikube docker-env)`, this or 'Never' is appropriate.
+        ports:
+        - containerPort: 8080         # The port your Spring Boot app listens on INSIDE the container
+        env:
+
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://my-fooddeliv-db-postgresql:5432/ordersdb"
+
+          # Username is sourced from ConfigMap
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              configMapKeyRef:
+                name: foodndeliv-db-config # Name of your ConfigMap
+                key: db-user                # Key within the ConfigMap
+          # Password is sourced from Secret
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: foodndeliv-db-secret # Name of your Secret
+                key: db-password            # Key within the Secret
+
+          # These individual components will be used by Spring Boot (via your application.properties)
+          # to construct the full jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} URL
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: foodndeliv-db-config
+                key: db-host
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: foodndeliv-db-config
+                key: db-port
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: foodndeliv-db-config
+                key: db-name
+
+          # --- CRITICAL FOR FIRST DEPLOYMENT TO MINIKUBE DB ---
+          - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+            value: "update" # To create the schema in the Minikube PostgreSQL instance.
+                            # Change to "validate" or "none" after the first successful run and schema creation.
+
+          # Optional: If you have specific Spring profiles for Kubernetes
+          # - name: SPRING_PROFILES_ACTIVE
+          #   value: "k8s"

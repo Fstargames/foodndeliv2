@@ -1,0 +1,18 @@
+# foodndeliv/k8s/postgres-values.yaml
+global:
+  postgresql:
+    auth:
+      database: ordersdb      # Your existing database name
+      username: myappuser     # Choose a username for your app (can be different from myadmin)
+      password: myapppassword # Choose a strong password for your app user 
+      postgresPassword: strongpostgresadminpassword # Optional: sets the 'postgres' superuser password
+
+# You might also want to configure persistence if you want data to survive pod restarts.
+# For development, the default ephemeral storage might be okay for now,
+# but for more robust setup, configure persistence:
+primary:
+  persistence:
+    enabled: true
+    size: 1Gi # Adjust size as needed
+#  service:
+#    type: ClusterIP # Default, fine for internal access
