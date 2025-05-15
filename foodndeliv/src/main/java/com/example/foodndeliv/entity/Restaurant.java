@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.example.foodndeliv.types.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "restaurants")
@@ -30,4 +31,9 @@ public class Restaurant {
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private RestaurantState state;
+
+    // New: Link to MenuItems
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference // Helps manage bidirectional relationships with MenuItem.restaurant
+    private List<MenuItem> menuItems;
 }

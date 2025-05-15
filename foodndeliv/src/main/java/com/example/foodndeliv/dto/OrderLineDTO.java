@@ -6,5 +6,5 @@ import lombok.Data;
 public class OrderLineDTO {
     private String productName;
     private Integer quantity;
-    private Double price;
+    private Double price; // Is server-set
 }

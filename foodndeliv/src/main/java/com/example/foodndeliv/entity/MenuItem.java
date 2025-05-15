@@ -1,15 +1,16 @@
 package com.example.foodndeliv.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor; // Optional, but can be useful
 
 @Entity
 @Table(name = "menu_items") // You can choose a table name
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class MenuItem {
 
     @Id
@@ -18,6 +19,7 @@ public class MenuItem {
 
     @ManyToOne(fetch = FetchType.LAZY) // Many menu items can belong to one restaurant
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonBackReference
     private Restaurant restaurant;
 
     @Column(name = "product_name", nullable = false)
