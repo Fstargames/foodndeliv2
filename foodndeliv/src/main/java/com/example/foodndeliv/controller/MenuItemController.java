@@ -1,58 +1,102 @@
 package com.example.foodndeliv.controller;
 
-import com.example.foodndeliv.dto.CreateMenuItemRequestDTO;
-import com.example.foodndeliv.dto.MenuItemDTO;
+import com.example.foodndeliv.dto.MenuItemRequestDTO;
+import com.example.foodndeliv.dto.MenuItemResponseDTO;
 import com.example.foodndeliv.service.MenuItemService;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+// For Location header (optional)
+// import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+// import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
-// Grouping all menu item related operations under /api
+@RequestMapping("/api") // Base path for this controller
 public class MenuItemController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MenuItemController.class);
 
     @Autowired
     private MenuItemService menuItemService;
 
     // Add a menu item to a specific restaurant
-    @PostMapping("/api/restaurants/{restaurantId}/menuitems")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MenuItemDTO addMenuItemToRestaurant(@PathVariable Long restaurantId, @RequestBody CreateMenuItemRequestDTO menuItemRequestDTO) {
-        return menuItemService.addMenuItemToRestaurant(restaurantId, menuItemRequestDTO);
+    // POST /api/restaurants/{restaurantId}/menu-items
+    @PostMapping("/restaurants/{restaurantId}/menu-items")
+    public ResponseEntity<MenuItemResponseDTO> addMenuItemToRestaurant(
+            @PathVariable Long restaurantId,
+            @Valid @RequestBody MenuItemRequestDTO menuItemRequestDTO) {
+        logger.info("Attempting to add menu item to restaurant ID: {}", restaurantId);
+        MenuItemResponseDTO createdMenuItem = menuItemService.addMenuItemToRestaurant(restaurantId, menuItemRequestDTO);
+        // Optional: Set Location header
+        // URI location = ServletUriComponentsBuilder
+        //         .fromCurrentContextPath().path("/api/menu-items/{id}") // Use a global path for the created item
+        //         .buildAndExpand(createdMenuItem.getId())
+        //         .toUri();
+        // return ResponseEntity.created(location).body(createdMenuItem);
+        return new ResponseEntity<>(createdMenuItem, HttpStatus.CREATED);
     }
 
     // Get all menu items for a specific restaurant
-    @GetMapping("/api/restaurants/{restaurantId}/menuitems")
-    public List<MenuItemDTO> getMenuItemsByRestaurant(@PathVariable Long restaurantId) {
-        return menuItemService.getMenuItemsByRestaurant(restaurantId);
+    // GET /api/restaurants/{restaurantId}/menu-items
+    @GetMapping("/restaurants/{restaurantId}/menu-items")
+    public ResponseEntity<List<MenuItemResponseDTO>> getMenuItemsByRestaurant(@PathVariable Long restaurantId) {
+        logger.info("Fetching menu items for restaurant ID: {}", restaurantId);
+        List<MenuItemResponseDTO> menuItems = menuItemService.getMenuItemsByRestaurant(restaurantId);
+        return ResponseEntity.ok(menuItems);
     }
 
     // Get a specific menu item by its ID
-    @GetMapping("/api/menuitems/{menuItemId}")
-    public MenuItemDTO getMenuItemById(@PathVariable Long menuItemId) {
-        return menuItemService.getMenuItemById(menuItemId);
+    // GET /api/menu-items/{menuItemId}  (Note: 'menu-items' not 'menuitems')
+    @GetMapping("/menu-items/{menuItemId}")
+    public ResponseEntity<MenuItemResponseDTO> getMenuItemById(@PathVariable Long menuItemId) {
+        logger.info("Fetching menu item by ID: {}", menuItemId);
+        MenuItemResponseDTO menuItem = menuItemService.getMenuItemById(menuItemId);
+        return ResponseEntity.ok(menuItem);
     }
 
     // Update a specific menu item
-    @PutMapping("/api/menuitems/{menuItemId}")
-    public MenuItemDTO updateMenuItem(@PathVariable Long menuItemId, @RequestBody CreateMenuItemRequestDTO menuItemRequestDTO) {
-        return menuItemService.updateMenuItem(menuItemId, menuItemRequestDTO);
+    // PUT /api/menu-items/{menuItemId}
+    @PutMapping("/menu-items/{menuItemId}")
+    public ResponseEntity<MenuItemResponseDTO> updateMenuItem(
+            @PathVariable Long menuItemId,
+            @Valid @RequestBody MenuItemRequestDTO menuItemRequestDTO) {
+        logger.info("Updating menu item ID: {}", menuItemId);
+        MenuItemResponseDTO updatedMenuItem = menuItemService.updateMenuItem(menuItemId, menuItemRequestDTO);
+        return ResponseEntity.ok(updatedMenuItem);
     }
 
     // Delete a specific menu item
-    @DeleteMapping("/api/menuitems/{menuItemId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMenuItem(@PathVariable Long menuItemId) {
+    // DELETE /api/menu-items/{menuItemId}
+    @DeleteMapping("/menu-items/{menuItemId}")
+    public ResponseEntity<Void> deleteMenuItem(@PathVariable Long menuItemId) {
+        logger.info("Deleting menu item ID: {}", menuItemId);
         menuItemService.deleteMenuItem(menuItemId);
+        return ResponseEntity.noContent().build(); // Standard for successful DELETE
     }
 
-    // Exception Handler (basic example, you might want a global one @ControllerAdvice)
+    // Basic Exception Handlers for this controller
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
+        logger.error("Resource not found: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        logger.error("Invalid argument: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    // Catch-all for other runtime exceptions specific to this controller's operations
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
-        // Log the exception ex.getMessage()
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        logger.error("An unexpected error occurred: {}", ex.getMessage(), ex); // Log stack trace for unexpected errors
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred. Please try again later.");
     }
 }

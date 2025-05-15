@@ -1,13 +1,15 @@
 package com.example.foodndeliv.entity;
 
+import com.example.foodndeliv.types.CustomerState;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.example.foodndeliv.types.*;
 
 @Entity
 @Table(name = "customers")
@@ -23,16 +25,17 @@ public class Customer {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false) // Consider adding @Email validation if using DTOs
     private String email;
 
+    // One-to-Many with Order
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Order> orders;
+    @JsonManagedReference("customer-orders") // Customer "manages" their orders
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Order> orders = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false)
     private CustomerState state;
-    
 }
-
