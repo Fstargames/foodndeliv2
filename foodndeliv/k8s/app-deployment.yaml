@@ -20,7 +20,7 @@ spec:
         command: ['sh', '-c', 'echo -n "Waiting for DB service my-foodndeliv-db-postgresql to be resolvable..."; until nslookup my-fooddeliv-db-postgresql; do echo -n "."; sleep 2; done; echo "DB service is resolvable!"']
       containers:
       - name: foodndeliv-app-container # A name for the container within the pod
-        image: foodndeliv-app:v2   # Your Docker image name and tag (ensure this matches your built image)
+        image: foodndeliv-app:vNewTag   # Your Docker image name and tag (ensure this matches your built image)
         imagePullPolicy: IfNotPresent # Important: Use local Minikube image if present.
                                       # If you built the image directly into Minikube's daemon
                                       # using `eval $(minikube docker-env)`, this or 'Never' is appropriate.
@@ -64,7 +64,7 @@ spec:
 
           # --- CRITICAL FOR FIRST DEPLOYMENT TO MINIKUBE DB ---
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-            value: "update" # To create the schema in the Minikube PostgreSQL instance.
+            value: "create" # To create the schema in the Minikube PostgreSQL instance.
                             # Change to "validate" or "none" after the first successful run and schema creation.
 
           # Optional: If you have specific Spring profiles for Kubernetes
