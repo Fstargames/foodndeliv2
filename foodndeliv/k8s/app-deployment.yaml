@@ -20,7 +20,7 @@ spec:
         command: ['sh', '-c', 'echo -n "Waiting for DB service my-foodndeliv-db-postgresql to be resolvable..."; until nslookup my-fooddeliv-db-postgresql; do echo -n "."; sleep 2; done; echo "DB service is resolvable!"']
       containers:
       - name: foodndeliv-app-container # A name for the container within the pod
-        image: foodndeliv-app:vtest2    # Your Docker image name and tag (ensure this matches your built image)
+        image: foodndeliv-app:v2   # Your Docker image name and tag (ensure this matches your built image)
         imagePullPolicy: IfNotPresent # Important: Use local Minikube image if present.
                                       # If you built the image directly into Minikube's daemon
                                       # using `eval $(minikube docker-env)`, this or 'Never' is appropriate.
