@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: foodndeliv-db-config
 data:
-  db-host: "my-fooddeliv-db-postgresql"  # Service name of your Helm-deployed PostgreSQL
+  db-host: "my-fooddeliv-db-postgresql"  # Service name of Helm-deployed PostgreSQL
   db-port: "5432"
   db-name: "ordersdb"
   db-user: "myappuser"

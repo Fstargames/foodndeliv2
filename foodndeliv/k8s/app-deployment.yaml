@@ -44,8 +44,7 @@ spec:
                 name: foodndeliv-db-secret # Name of your Secret
                 key: db-password            # Key within the Secret
 
-          # These individual components will be used by Spring Boot (via your application.properties)
-          # to construct the full jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME} URL
+          # --- DB connection properties ---
           - name: DB_HOST
             valueFrom:
               configMapKeyRef:
@@ -64,9 +63,5 @@ spec:
 
           # --- CRITICAL FOR FIRST DEPLOYMENT TO MINIKUBE DB ---
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-            value: "create" # To create the schema in the Minikube PostgreSQL instance.
-                            # Change to "validate" or "none" after the first successful run and schema creation.
-
-          # Optional: If you have specific Spring profiles for Kubernetes
-          # - name: SPRING_PROFILES_ACTIVE
-          #   value: "k8s"
+            value: "create" # To alter the schema in the Minikube PostgreSQL instance.
+                            
