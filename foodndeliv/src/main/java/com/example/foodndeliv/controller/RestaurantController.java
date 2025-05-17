@@ -61,25 +61,25 @@ public class RestaurantController {
 
 
     // Exception Handlers
-    @ExceptionHandler(NoSuchElementException.class)
+    //@ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
         logger.warn("Resource not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    //@ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.warn("Invalid argument: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalStateException.class) // For business logic violations like "cannot delete with active orders"
+    //@ExceptionHandler(IllegalStateException.class) // For business logic violations like "cannot delete with active orders"
     public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
         logger.warn("Business logic violation: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage()); // 409 Conflict is often suitable
     }
 
-    @ExceptionHandler(Exception.class)
+   // @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
         logger.error("An unexpected error occurred in RestaurantController", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");

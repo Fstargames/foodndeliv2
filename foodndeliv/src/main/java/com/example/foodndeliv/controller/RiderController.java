@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -137,13 +136,13 @@ public class RiderController {
     // --- Exception Handlers specific to this Controller ---
     // These can be moved to a global @ControllerAdvice if preferred
 
-    @ExceptionHandler(NoSuchElementException.class)
+    //@ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
         logger.warn("Resource not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    //@ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.warn("Invalid argument or duplicate resource: {}", ex.getMessage());
         // Using 409 Conflict for duplicates is often more appropriate than 400 Bad Request
@@ -154,7 +153,7 @@ public class RiderController {
     }
 
     // Generic catch-all for unexpected server errors in this controller
-    @ExceptionHandler(Exception.class)
+    //@ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
         logger.error("An unexpected error occurred in RiderController: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected internal error occurred.");

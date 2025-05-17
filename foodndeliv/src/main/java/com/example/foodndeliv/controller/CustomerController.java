@@ -90,13 +90,13 @@ public class CustomerController {
     // --- Exception Handlers for this Controller ---
     // These can be moved to a global @ControllerAdvice for application-wide handling
 
-    @ExceptionHandler(NoSuchElementException.class)
+   // @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
         logger.warn("Resource not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class) // Catches duplicate email/name from service
+    //@ExceptionHandler(IllegalArgumentException.class) // Catches duplicate email/name from service
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.warn("Invalid argument or duplicate resource: {}", ex.getMessage());
         // Using 409 Conflict for duplicates is often more appropriate than 400 Bad Request
@@ -106,13 +106,13 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalStateException.class) // For other business logic violations
+    //@ExceptionHandler(IllegalStateException.class) // For other business logic violations
     public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
         logger.warn("Business logic violation: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class) // Generic catch-all for unexpected server errors
+    //@ExceptionHandler(Exception.class) // Generic catch-all for unexpected server errors
     public ResponseEntity<String> handleGenericException(Exception ex) {
         logger.error("An unexpected error occurred in CustomerController: {}", ex.getMessage(), ex); // Log stack trace
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected internal error occurred.");
