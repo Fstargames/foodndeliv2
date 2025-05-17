@@ -21,5 +21,5 @@ public class MenuItemRequestDTO {
     @PositiveOrZero(message = "Price must be zero or positive")
     private Double price;
 
-    private Boolean isAvailable; // Optional: if not provided, service can default
+    private Boolean isAvailable; 
 }

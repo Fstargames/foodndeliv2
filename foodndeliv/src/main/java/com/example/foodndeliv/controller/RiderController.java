@@ -134,7 +134,6 @@ public class RiderController {
     }
 
     // --- Exception Handlers specific to this Controller ---
-    // These can be moved to a global @ControllerAdvice if preferred
 
     //@ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {

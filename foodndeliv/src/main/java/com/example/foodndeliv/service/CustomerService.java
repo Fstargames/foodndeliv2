@@ -4,7 +4,6 @@ import com.example.foodndeliv.dto.CreateCustomerRequestDTO;
 import com.example.foodndeliv.dto.CustomerDTO;
 import com.example.foodndeliv.entity.Customer;
 import com.example.foodndeliv.repository.CustomerRepository;
-// import com.example.foodndeliv.repository.OrderRepository; // If checking orders before delete
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +30,6 @@ public class CustomerService {
     @Autowired
     private ModelMapper modelMapper; // Ensure ModelMapperConfig.java exists and is a @Configuration
 
-    // Example: For checking orders before deleting a customer
-    // @Autowired(required = false) // Make it optional if not always used
-    // private OrderRepository orderRepository;
-
     /**
      * Creates a new customer.
      * Checks for duplicate email and name before saving.
@@ -52,7 +47,7 @@ public class CustomerService {
             throw new IllegalArgumentException("Customer with email '" + requestDTO.getEmail() + "' already exists.");
         });
 
-        // Check for existing customer with the same name (since your entity has unique=true on name)
+        // Check for existing customer with the same name (since entity has unique=true on name)
         customerRepository.findByName(requestDTO.getName()).ifPresent(existingCustomer -> {
             logger.warn("Attempt to create customer with existing name: {}", requestDTO.getName());
             throw new IllegalArgumentException("Customer with name '" + requestDTO.getName() + "' already exists.");

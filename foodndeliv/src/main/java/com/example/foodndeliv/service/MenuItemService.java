@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException; // Or your custom ResourceNotFoundException
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +32,7 @@ public class MenuItemService {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NoSuchElementException("Restaurant not found with ID: " + restaurantId));
 
-        // Optional: Check if a menu item with the same name already exists for this restaurant
+        // Check if a menu item with the same name already exists for this restaurant
         menuItemRepository.findByRestaurantIdAndProductNameIgnoreCase(restaurantId, menuItemRequestDTO.getProductName())
             .ifPresent(item -> {
                 throw new IllegalArgumentException("Menu item with name '" + menuItemRequestDTO.getProductName() + "' already exists for this restaurant.");
@@ -119,8 +119,8 @@ public class MenuItemService {
         if (!menuItemRepository.existsById(menuItemId)) {
             throw new NoSuchElementException("Menu item not found with ID: " + menuItemId);
         }
-        // Consider business logic: soft delete (set isAvailable = false) vs. hard delete
-        // For now, a hard delete:
+        
+        // hard delete
         menuItemRepository.deleteById(menuItemId);
     }
 }

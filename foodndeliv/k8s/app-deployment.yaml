@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app: foodndeliv # Must match spec.template.metadata.labels
-  template: # This is the blueprint for your Pods
+  template: # This is the blueprint for the Pods
     metadata:
       labels:
         app: foodndeliv # Pods will have this label
@@ -20,12 +20,11 @@ spec:
         command: ['sh', '-c', 'echo -n "Waiting for DB service my-foodndeliv-db-postgresql to be resolvable..."; until nslookup my-fooddeliv-db-postgresql; do echo -n "."; sleep 2; done; echo "DB service is resolvable!"']
       containers:
       - name: foodndeliv-app-container # A name for the container within the pod
-        image: foodndeliv-app:vNewTag   # Your Docker image name and tag (ensure this matches your built image)
-        imagePullPolicy: IfNotPresent # Important: Use local Minikube image if present.
-                                      # If you built the image directly into Minikube's daemon
-                                      # using `eval $(minikube docker-env)`, this or 'Never' is appropriate.
+        image: foodndeliv-app:vNewTag   # Docker image name and tag (must match built image)
+        imagePullPolicy: IfNotPresent # Uses local Minikube image if present.
+                                     
         ports:
-        - containerPort: 8080         # The port your Spring Boot app listens on INSIDE the container
+        - containerPort: 8080         # The port the Spring Boot app listens on Inside the container
         env:
 
           - name: SPRING_DATASOURCE_URL
@@ -35,13 +34,13 @@ spec:
           - name: SPRING_DATASOURCE_USERNAME
             valueFrom:
               configMapKeyRef:
-                name: foodndeliv-db-config # Name of your ConfigMap
+                name: foodndeliv-db-config # Name of ConfigMap
                 key: db-user                # Key within the ConfigMap
           # Password is sourced from Secret
           - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: foodndeliv-db-secret # Name of your Secret
+                name: foodndeliv-db-secret # Name of  Secret
                 key: db-password            # Key within the Secret
 
           # --- DB connection properties ---

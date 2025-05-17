@@ -5,11 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode; // Recommended for JPA entities
-import lombok.ToString; // Recommended for JPA entities
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents a Rider in the system.
@@ -38,15 +33,6 @@ public class Rider {
     @Column(name = "status", nullable = false)
     private RiderStatus status;
 
-    // Example of a relationship: A rider can be assigned to multiple orders.
-    // This is a conceptual example; the exact relationship might depend on how assignments are managed.
-    // If an Order has a 'rider' field, this would be the other side of a OneToMany.
-    // For simplicity in this CRUD task, we might not fully implement order assignment logic here,
-    // but the field can be present.
-    // @OneToMany(mappedBy = "assignedRider", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @ToString.Exclude // Avoid circular dependencies in toString
-    // @EqualsAndHashCode.Exclude // Avoid circular dependencies in equals/hashCode
-    // private List<Order> assignedOrders = new ArrayList<>();
 
     // Constructor for creating a new Rider (ID is auto-generated)
     public Rider(String name, String phoneNumber, String vehicleDetails, RiderStatus status) {

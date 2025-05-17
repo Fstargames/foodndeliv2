@@ -88,7 +88,6 @@ public class CustomerController {
     }
 
     // --- Exception Handlers for this Controller ---
-    // These can be moved to a global @ControllerAdvice for application-wide handling
 
    // @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {

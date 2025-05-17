@@ -1,6 +1,6 @@
 package com.example.foodndeliv.dto;
 
-import com.example.foodndeliv.types.RestaurantState; // Assuming this is your enum
+import com.example.foodndeliv.types.RestaurantState; 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

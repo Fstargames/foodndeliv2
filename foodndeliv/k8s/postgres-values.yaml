@@ -11,5 +11,3 @@ primary:
   persistence:
     enabled: true
     size: 1Gi # Adjust size as needed
-#  service:
-#    type: ClusterIP # Default, fine for internal access

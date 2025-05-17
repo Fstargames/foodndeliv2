@@ -21,12 +21,12 @@ public class MenuItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relationship to Restaurant (Many-to-One) - THIS IS THE KEY PART
+    // Relationship to Restaurant (Many-to-One) 
     @ManyToOne(fetch = FetchType.LAZY) // LAZY is good for performance
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonBackReference // When serializing a MenuItem, don't re-serialize the full Restaurant here
-    @ToString.Exclude // Avoid issues with Lombok's toString
-    @EqualsAndHashCode.Exclude // Avoid issues with Lombok's equals/hashCode
+    @ToString.Exclude // Avoids issues with Lombok's toString
+    @EqualsAndHashCode.Exclude // Avoids issues with Lombok's equals/hashCode
     private Restaurant restaurant;
 
     @Column(name = "product_name", nullable = false, length = 255)

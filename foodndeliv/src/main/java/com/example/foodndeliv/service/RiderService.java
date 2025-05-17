@@ -137,9 +137,8 @@ public class RiderService {
             logger.warn("Rider with ID: {} not found for deletion.", riderId);
             throw new NoSuchElementException("Rider not found with ID: " + riderId);
         }
-        // Business logic for deletion:
-        // - Are there active deliveries assigned? If so, prevent deletion or reassign.
-        // - For this task, a simple hard delete is implemented.
+
+        // hard delete
         riderRepository.deleteById(riderId);
         logger.info("Rider with ID: {} deleted successfully.", riderId);
     }

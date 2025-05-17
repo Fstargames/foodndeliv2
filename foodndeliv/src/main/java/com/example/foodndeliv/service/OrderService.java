@@ -95,8 +95,7 @@ public class OrderService {
         }
 
         order.setOrderLines(processedOrderLines);
-        // Decide if you want to store totalPrice in the Order entity.
-        // If Order.java has `private Double totalPrice;`, then uncomment:
+        // to store totalPrice in the Order entity, uncomment:
         // order.setTotalPrice(calculatedTotalPrice); 
 
         Order savedOrder = orderRepository.save(order);

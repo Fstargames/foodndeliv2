@@ -51,7 +51,7 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurant);
     }
 
-    // *** NEW METHOD TO HANDLE DELETE REQUESTS ***
+    // *** METHOD TO HANDLE DELETE REQUESTS ***
     @DeleteMapping("/{restaurantId}")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long restaurantId) {
         logger.info("RestaurantController: Received request to delete restaurant with ID: {}", restaurantId);

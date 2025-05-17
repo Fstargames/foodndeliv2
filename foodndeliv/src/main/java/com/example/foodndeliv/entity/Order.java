@@ -23,7 +23,7 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "order_details", length = 500) // You might want to populate or remove this
+    @Column(name = "order_details", length = 500) 
     private String orderDetails;
 
     // Many-to-One with Restaurant
@@ -53,7 +53,7 @@ public class Order {
     @Column(name = "state", nullable = false)
     private OrderState state;
 
-    // Decide if you want to persist totalPrice. If so:
+    // If totalPrice is to persist:
     // @Column(name = "total_price")
     // private Double totalPrice;
 }

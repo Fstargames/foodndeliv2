@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-// For Location header (optional)
-// import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-// import java.net.URI;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -33,12 +31,6 @@ public class MenuItemController {
             @Valid @RequestBody MenuItemRequestDTO menuItemRequestDTO) {
         logger.info("Attempting to add menu item to restaurant ID: {}", restaurantId);
         MenuItemResponseDTO createdMenuItem = menuItemService.addMenuItemToRestaurant(restaurantId, menuItemRequestDTO);
-        // Optional: Set Location header
-        // URI location = ServletUriComponentsBuilder
-        //         .fromCurrentContextPath().path("/api/menu-items/{id}") // Use a global path for the created item
-        //         .buildAndExpand(createdMenuItem.getId())
-        //         .toUri();
-        // return ResponseEntity.created(location).body(createdMenuItem);
         return new ResponseEntity<>(createdMenuItem, HttpStatus.CREATED);
     }
 
@@ -81,6 +73,7 @@ public class MenuItemController {
     }
 
     // Basic Exception Handlers for this controller
+    
     //@ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
         logger.error("Resource not found: {}", ex.getMessage());

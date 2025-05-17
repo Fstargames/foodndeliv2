@@ -27,7 +27,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
      * @param name The name to search for.
      * @return An Optional containing the customer if found, or empty otherwise.
      */
-    Optional<Customer> findByName(String name); // Your Customer entity has unique=true on name
+    Optional<Customer> findByName(String name); //  Customer entity has unique=true on name
 
     
 }

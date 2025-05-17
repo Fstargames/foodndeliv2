@@ -25,7 +25,7 @@ public class Customer {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "email", nullable = false) // Consider adding @Email validation if using DTOs
+    @Column(name = "email", nullable = false)
     private String email;
 
     // One-to-Many with Order
