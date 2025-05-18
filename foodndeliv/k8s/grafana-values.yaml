@@ -1,0 +1,21 @@
+# k8s/grafana-values.yaml
+
+# Set an admin password for Grafana login
+adminPassword: "grafanapassword" # CHANGE THIS to a secure password
+
+# Automatically provision the Prometheus data source
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        # This URL points to your Prometheus server's Kubernetes service.
+        # 'my-prometheus-server' is the typical service name if your Helm release for Prometheus was 'my-prometheus'.
+        # 'default' is the namespace.
+        # ':80' is the typical service port for the Prometheus server.
+        # Verify these details from your Prometheus installation if needed (kubectl get svc -n default my-prometheus-server)
+        url: http://my-prometheus-server.default.svc.cluster.local:80
+        access: proxy
+        isDefault: true
+        editable: true # You can still edit it in the UI
