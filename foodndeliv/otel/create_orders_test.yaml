@@ -1,0 +1,27 @@
+# otel/create_orders_test.yaml
+config:
+  target: "http://127.0.0.1:41987" # Find value for this using "minikube service foodndeliv-service --url -n default"
+  payload:
+    path: "orders_payload.csv" # Assumes CSV is in the same dir as this script, or provide full/relative path
+    fields:
+      - "customerId"
+      - "restaurantId"
+      - "productName"
+      - "quantity"
+    skipHeader: true # Uncomment if your CSV has a header row
+  phases:
+    - duration: 100 # Adjust duration and arrivalRate to control how fast 1000 orders are made
+      arrivalRate: 10 # 10 users/orders per second
+      name: "Create 1000 Orders"
+scenarios:
+  - name: "Create an Order from CSV"
+    flow:
+      - post:
+          url: "/api/ctrl/orders" # Your order creation endpoint
+          json:
+            customerId: "{{ customerId }}"
+            restaurantId: "{{ restaurantId }}"
+            state: "OPEN"
+            orderLines:
+              - productName: "{{ productName }}"
+                quantity: "{{ quantity }}"

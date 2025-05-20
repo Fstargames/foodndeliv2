@@ -20,7 +20,7 @@ spec:
         command: ['sh', '-c', 'echo -n "Waiting for DB service my-foodndeliv-db-postgresql to be resolvable..."; until nslookup my-fooddeliv-db-postgresql; do echo -n "."; sleep 2; done; echo "DB service is resolvable!"']
       containers:
       - name: foodndeliv-app-container # A name for the container within the pod
-        image: foodndeliv-app:vNewTag   # Docker image name and tag (must match built image)
+        image: foodndeliv-app:otel-k8s   # Docker image name and tag (must match built image)
         imagePullPolicy: IfNotPresent # Uses local Minikube image if present.
                                      
         ports:
@@ -59,8 +59,40 @@ spec:
               configMapKeyRef:
                 name: foodndeliv-db-config
                 key: db-name
-
-          # --- CRITICAL FOR FIRST DEPLOYMENT TO MINIKUBE DB ---
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
             value: "create" # To alter the schema in the Minikube PostgreSQL instance.
+            
+
+            # --- OpenTelemetry Configuration ---
+          - name: OTEL_SERVICE_NAME
+            value: "foodndeliv-k8s" # Service name as it will appear in Jaeger
+          - name: OTEL_TRACES_EXPORTER
+            value: "jaeger"         # Export traces using the Jaeger exporter
+          - name: OTEL_EXPORTER_JAEGER_ENDPOINT
+            value: "http://my-jaeger-collector.default.svc.cluster.local:14250"
+            # Your Dockerfile's ENTRYPOINT uses the javaagent directly, so these ENV vars configure it.
+          - name: OTEL_TRACES_SAMPLER
+            value: "always_on"      # Sample all traces for testing/dev
+          - name: OTEL_METRICS_EXPORTER
+            value: "none"           # Disable OTel metrics; Prometheus is used for metrics
+          - name: OTEL_LOGS_EXPORTER
+            value: "none"           # Disable OTel logs for this setup
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness # Standard Spring Boot readiness endpoint
+            port: 8080
+          initialDelaySeconds: 30 # Give more time for app with agent to start
+          periodSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness # Standard Spring Boot liveness endpoint
+            port: 8080
+          initialDelaySeconds: 60 # Give more time for app with agent to start
+          periodSeconds: 15
+          failureThreshold: 3
+
+
+
+
                             
