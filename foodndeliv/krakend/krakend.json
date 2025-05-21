@@ -1,0 +1,519 @@
+{
+  "$schema": "https://www.krakend.io/schema/v3.json",
+  "version": 3,
+  "name": "FoodNDeliv API Gateway",
+  "timeout": "5000ms",
+  "cache_ttl": "0s",
+  "output_encoding": "json",
+  "port": 8080,
+  "endpoints": [
+    {
+      "endpoint": "/api/restaurants",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/restaurants/{restaurantId}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants/{restaurantId}",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders/search/findOrdersByRestaurantName",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_query_strings": ["name"],
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/orders/search/findOrdersByRestaurantName",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/customers",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/customers",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/customers",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/customers",
+          "method": "POST",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/customers/{customerId}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization", "X-Custid"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["customer", "admin"],
+          "propagate_claims": [["custid", "X-Custid"]]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/customers/{customerId}",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/customers/{customerId}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/customers/{customerId}",
+          "method": "DELETE",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/restaurants",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants",
+          "method": "POST",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/restaurants/{restaurantId}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants/{restaurantId}",
+          "method": "DELETE",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization", "X-Custid"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["customer"],
+          "propagate_claims": [["custid", "X-Custid"]]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/ctrl/orders",
+          "method": "POST",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/ctrl/orders",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders/search/findOrdersByCustID",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["customer"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/orders/search/findOrdersByCustID?custID={JWT.custid}",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/orders/search/findOrdersByCustRestID",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_query_strings": ["restID"],
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["customer"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/orders/search/findOrdersByCustRestID?custID={JWT.custid}",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/riders",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/riders",
+          "method": "POST",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/riders",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/riders",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/riders/{riderId}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/riders/{riderId}",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/riders/{riderId}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/riders/{riderId}",
+          "method": "PUT",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/riders/{riderId}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/riders/{riderId}",
+          "method": "DELETE",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/restaurants/{restaurantId}/menu-items",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants/{restaurantId}/menu-items",
+          "method": "POST",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/restaurants/{restaurantId}/menu-items",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/restaurants/{restaurantId}/menu-items",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/menu-items/{menuItemId}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/menu-items/{menuItemId}",
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/menu-items/{menuItemId}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/menu-items/{menuItemId}",
+          "method": "PUT",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/menu-items/{menuItemId}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["admin"]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/menu-items/{menuItemId}",
+          "method": "DELETE",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    }
+  ]
+}

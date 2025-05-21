@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: krakend-api-gateway # This service will expose KrakenD
+  labels:
+    app: krakend-gateway
+spec:
+  type: LoadBalancer # To get an external IP via minikube tunnel
+  selector:
+    app: krakend-gateway # Must match the labels in your Deployment's template
+  ports:
+  - name: http # Name of the service port
+    port: 80    # External port clients will connect to
+    targetPort: http # Name of the port on the KrakenD container (or directly 8080)
+  # If you later configure TLS termination in KrakenD (Task 3c), you'll add port 443 here too
+  # - name: https
+  #   port: 443
+  #   targetPort: <krakend_https_port_if_different_or_named_port>

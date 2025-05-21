@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: krakend-gateway
+  labels:
+    app: krakend-gateway
+spec:
+  replicas: 1 # Start with 1 replica
+  selector:
+    matchLabels:
+      app: krakend-gateway
+  template:
+    metadata:
+      labels:
+        app: krakend-gateway
+    spec:
+      containers:
+      - name: krakend
+        image: fastar515/foodndeliv-krakend:v2 # Use your image name and tag
+        imagePullPolicy: Always # Or IfNotPresent if the image is already in Minikube's Docker daemon
+        ports:
+        - name: http # Name for the port
+          containerPort: 8080 # Port KrakenD listens on (from your krakend.json)
+        # Add liveness and readiness probes for a production setup
+        # livenessProbe:
+        #   httpGet:
+        #     path: /__health # KrakenD health check endpoint
+        #     port: 8080
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /__health
+        #     port: 8080
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 10
