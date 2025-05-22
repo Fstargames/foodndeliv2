@@ -21,16 +21,4 @@ spec:
         ports:
         - name: http # Name for the port
           containerPort: 8080 # Port KrakenD listens on (from your krakend.json)
-        # Add liveness and readiness probes for a production setup
-        # livenessProbe:
-        #   httpGet:
-        #     path: /__health # KrakenD health check endpoint
-        #     port: 8080
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 10
-        # readinessProbe:
-        #   httpGet:
-        #     path: /__health
-        #     port: 8080
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 10
+        
