@@ -419,6 +419,57 @@
         }
       ]
     },
+    
+    {
+      "endpoint": "/api/riders/me", 
+      "method": "GET",
+      "output_encoding": "no-op",
+      "input_headers": ["Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["rider"] 
+        }
+      },
+      "backend": [
+        {
+          
+          "url_pattern": "/api/riders/{JWT.rider_id}", 
+          "method": "GET",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/riders/me", 
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "input_headers": ["Content-Type", "Accept", "Authorization"],
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://my-keycloak.default.svc.cluster.local/realms/fnd/protocol/openid-connect/certs",
+          "disable_jwk_security": true,
+          "audience": ["fnd"],
+          "roles_key_is_nested": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["rider"] 
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/riders/{JWT.rider_id}", 
+          "method": "PUT",
+          "host": ["http://foodndeliv-service.default.svc.cluster.local:8080"]
+        }
+      ]
+    },
+
     {
       "endpoint": "/api/restaurants/{restaurantId}/menu-items",
       "method": "POST",
