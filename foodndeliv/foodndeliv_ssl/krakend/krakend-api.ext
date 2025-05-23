@@ -1,0 +1,10 @@
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = api.foodndeliv.local
+DNS.2 = localhost # Useful if testing locally before full K8s deployment
+# Add any other DNS names or IP addresses KrakenD might be accessed by
+# IP.1 = 127.0.0.1 # If needed

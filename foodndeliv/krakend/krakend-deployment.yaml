@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
       - name: krakend
-        image: fastar515/foodndeliv-krakend:123 # Use your image name and tag
+        image: fastar515/foodndeliv-krakend:tls # Use your image name and tag
         imagePullPolicy: Always # Or IfNotPresent if the image is already in Minikube's Docker daemon
         ports:
         - name: http # Name for the port
-          containerPort: 8080 # Port KrakenD listens on (from your krakend.json)
+          containerPort: 8080 # Port KrakenD listens on (from krakend.json)
+        - name: https
+          containerPort: 8443 # Port KrakenD listens on (from krakend.json)
         

@@ -1,0 +1,11 @@
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = keycloak.local
+DNS.2 = localhost
+# Add internal Kubernetes service names if direct intra-cluster TLS will be used and needs to be trusted by this cert
+# DNS.3 = my-keycloak.default.svc.cluster.local # Example internal service name
+# DNS.4 = my-keycloak-http.default.svc.cluster.local # Another example

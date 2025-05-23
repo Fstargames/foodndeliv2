@@ -6,6 +6,12 @@
   "cache_ttl": "0s",
   "output_encoding": "json",
   "port": 8080,
+  "tls_port": 8443,
+  "tls": {
+    "public_key": "/etc/krakend/ssl/krakend-api.crt", 
+    "private_key": "/etc/krakend/ssl/krakend-api.key", 
+    "min_version": "TLS13" 
+  },
   "endpoints": [
     {
       "endpoint": "/api/restaurants",
