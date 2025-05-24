@@ -1,6 +1,6 @@
 # otel/create_orders_test.yaml
 config:
-  target: "http://127.0.0.1:41987" # Find value for this using "minikube service foodndeliv-service --url -n default"
+  target: "http://127.0.0.1:43065" # Find value for this using "minikube service foodndeliv-service --url -n default"
   payload:
     path: "orders_payload.csv" # Assumes CSV is in the same dir as this script, or provide full/relative path
     fields:

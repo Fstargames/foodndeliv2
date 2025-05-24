@@ -1,6 +1,6 @@
 # k8s/foodndeliv_load_test.yaml
 config:
-  target: "http://127.0.0.1:36473" # Gotten with "minikube service foodndeliv-service --url -n default"
+  target: "http://127.0.0.1:37217" # Gotten with "minikube service foodndeliv-service --url -n default"
   phases:
     - duration: 120  # Run for 120 seconds
       arrivalRate: 5 # Start with 5 new users per second
