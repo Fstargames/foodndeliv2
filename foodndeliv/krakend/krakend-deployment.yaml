@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: krakend
-        image: fastar515/foodndeliv-krakend:1 # Use your image name and tag
+        image: fastar515/foodndeliv-krakend:2 # Use your image name and tag
         imagePullPolicy: Always # Or IfNotPresent if the image is already in Minikube's Docker daemon
         ports:
         - name: http # Name for the port

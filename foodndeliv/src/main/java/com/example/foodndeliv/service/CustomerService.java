@@ -150,10 +150,6 @@ public class CustomerService {
             response.close(); // Important: always close the Keycloak response
         } catch (Exception e) {
             logger.error("Exception during Keycloak user creation process for customer {}: {}", savedCustomer.getName(), e.getMessage(), e);
-            // Depending on your requirements, you might want to:
-            // 1. Rollback the database transaction for the customer (if the @Transactional doesn't cover this scenario)
-            // 2. Log this failure for a retry mechanism
-            // 3. Notify an admin
         }
         // --- END: Keycloak User Creation Logic ---
 
